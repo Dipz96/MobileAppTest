@@ -38,8 +38,8 @@ public class RedBusTestMethods {
 	}
 
 	
-	@When("Login To Account")
-	public void login_account(){	
+	@When("Login To Account with {string}")
+	public void login_account(String login_method) throws InterruptedException{	
 		List<WebElement> skipEle=CommonUtilities.driver.findElements(By.id(objectRepo.getProperty("skiplocation_id")));
 		if(skipEle.size()>0)
 			skipEle.get(0).click();
@@ -54,12 +54,29 @@ public class RedBusTestMethods {
 		WebElement loginBtn=CommonUtilities.wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(objectRepo.getProperty("login_id"))));
 		loginBtn.click();
 		
-		WebElement googleLogin=CommonUtilities.wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(objectRepo.getProperty("google_Login"))));
-		googleLogin.click();
-				
-		List<WebElement> chooseAccount=CommonUtilities.driver.findElements(By.xpath(objectRepo.getProperty("Choose_Account")));
-		if(chooseAccount.size()>0)
-			chooseAccount.get(0).click();
+		if(login_method.equals("email"))
+		{
+			WebElement googleLogin=CommonUtilities.wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(objectRepo.getProperty("google_Login"))));
+			googleLogin.click();
+					
+			List<WebElement> chooseAccount=CommonUtilities.driver.findElements(By.xpath(objectRepo.getProperty("Choose_Account")));
+			if(chooseAccount.size()>0)
+				chooseAccount.get(0).click();
+		}
+		else {
+			WebElement phoneLogin=CommonUtilities.wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(objectRepo.getProperty("Enter_Contact_id"))));
+			phoneLogin.clear();
+			phoneLogin.sendKeys("7001626618");
+			
+			WebElement otpBtn=CommonUtilities.wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(objectRepo.getProperty("Generate_OTP_id"))));
+			otpBtn.click();
+			
+			Thread.sleep(5000);
+			
+//			cb.clearNotifications();
+//			
+//			String otp=cb.getOTP();
+		}
 	}
 	
 	

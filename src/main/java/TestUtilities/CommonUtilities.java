@@ -2,19 +2,25 @@ package TestUtilities;
 
 import java.net.URL;
 import java.time.Duration;
+import java.util.Properties;
 import java.util.Random;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
 
 public class CommonUtilities {
 
 	public static AppiumDriver driver;
 	public static WebDriverWait wait;
-	
+	Properties objectRepo=new Properties();
+
 	public void launchApplication() {
 		DesiredCapabilities cap=new DesiredCapabilities();
     	try {
@@ -52,5 +58,16 @@ public class CommonUtilities {
 		 driver.quit();
 	 }
 	 
+	 public void clearNotifications() {
+		 ((AndroidDriver)driver).openNotifications();
+		 WebElement notification_clear=wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(objectRepo.getProperty("Notification_clear_id"))));
+		 notification_clear.click();
+	 }
+	 
+	 public String getOTP() {
+		 ((AndroidDriver) driver). openNotifications();
+		 String otp = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(objectRepo.getProperty("opt_msg_id")))).getText().split("<#>")[1];
+		 return otp;
+	 }
 	 
 }
